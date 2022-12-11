@@ -1,2 +1,0 @@
-class DefinationsController < ApplicationController
-end

@@ -18,6 +18,6 @@ class V1::WordsController < ApplicationController
   private
 
   def words_params
-    params.require(:word).permit(:title, :letter, :user)
+    params.require(:word).permit(:title, :letter_id, :user_id)
   end
 end

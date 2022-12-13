@@ -14,6 +14,6 @@ class V1::DefinationsController < ApplicationController
   private
 
   def defination_params
-    params.require(:defination).permit(:define, :example_statement, :approval_status, :user, :word)
+    params.require(:defination).permit(:define, :example_statement, :approval_status, :user_id, :word_id)
   end
 end

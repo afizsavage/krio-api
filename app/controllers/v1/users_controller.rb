@@ -6,8 +6,18 @@ class V1::UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(first_name: params[:first_name], last_name: params[:last_name], role: params[:role])
+    @user = User.create(users_params)
 
-    render json: @user.to_json
+    if @user.save
+      render json: @user.to_json, status: :created
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def users_params
+    params.require(:user).permit(:first_name, :last_name, :role)
   end
 end

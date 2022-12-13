@@ -6,8 +6,18 @@ class V1::WordsController < ApplicationController
   end
 
   def create
-    @word = Word.create(title: params[:title], letter: params[:letter], user: params[:user])
+    @word = Word.create(words_params)
 
-    render json: @word.to_json
+    if @word.save
+      render json: @word.to_json, status: :created
+    else
+      render json: @word.errors, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def words_params
+    params.require(:word).permit(:title, :letter, :user)
   end
 end

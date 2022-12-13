@@ -8,7 +8,15 @@ Rails.application.routes.draw do
   end
 
   namespace :v1, defaults: { format: 'json' } do
+    post 'users', to: 'users#create'
+  end
+
+  namespace :v1, defaults: { format: 'json' } do
     get 'words', to: 'words#index'
+  end
+
+  namespace :v1, defaults: { format: 'json' } do
+    post 'words', to: 'words#create'
   end
 
   namespace :v1, defaults: { format: 'json' } do

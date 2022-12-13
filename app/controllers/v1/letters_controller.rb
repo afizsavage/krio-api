@@ -12,8 +12,14 @@ class V1::LettersController < ApplicationController
   end
 
   def create
-    @letter = Letter.create(character: params[:character])
+    @letter = Letter.create(letters_params)
 
     render json: @letter.to_json
+  end
+
+  private
+
+  def letters_params
+    params.require(:letter).permit(:character)
   end
 end

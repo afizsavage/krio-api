@@ -1,6 +1,6 @@
 class V1::DefinationsController < ApplicationController
   def index
-    @definations = Defination.all
+    @definations = Defination.limit(5).order('RANDOM()')
 
     render json: @definations.to_json
   end

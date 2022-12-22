@@ -1,10 +1,29 @@
 Rails.application.routes.draw do
-  resources :letters
-  resources :definations
-  resources :words
-  resources :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  namespace :v1, defaults: { format: 'json' } do
+    get 'letters', to: 'letters#index'
+  end
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  namespace :v1, defaults: { format: 'json' } do
+    get 'users', to: 'users#index'
+  end
+
+  namespace :v1, defaults: { format: 'json' } do
+    post 'users', to: 'users#create'
+  end
+
+  namespace :v1, defaults: { format: 'json' } do
+    get 'words', to: 'words#index'
+  end
+
+  namespace :v1, defaults: { format: 'json' } do
+    post 'words', to: 'words#create'
+  end
+
+  namespace :v1, defaults: { format: 'json' } do
+    get 'letters/:id', to: 'letters#show'
+  end
+
+  namespace :v1, defaults: { format: 'json' } do
+    get 'definitions', to: 'definations#index'
+  end
 end

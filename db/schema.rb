@@ -10,15 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_10_152732) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_13_115552) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "definations", force: :cascade do |t|
     t.text "define"
     t.string "example_statement"
     t.binary "approval_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.integer "word_id"
+    t.bigint "user_id"
+    t.bigint "word_id"
     t.index ["user_id"], name: "index_definations_on_user_id"
     t.index ["word_id"], name: "index_definations_on_word_id", unique: true
   end
@@ -41,8 +44,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_10_152732) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.integer "letter_id"
+    t.bigint "letter_id", null: false
+    t.bigint "user_id", null: false
     t.index ["letter_id"], name: "index_words_on_letter_id"
     t.index ["user_id"], name: "index_words_on_user_id"
   end

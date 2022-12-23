@@ -15,6 +15,13 @@ class V1::WordsController < ApplicationController
     end
   end
 
+  def show
+    @word = Word.includes(:defination).find(params[:id])
+    @definition = @word.defination
+
+    render json: { title: @word.title, definition: @definition }.to_json
+  end
+
   private
 
   def word_params

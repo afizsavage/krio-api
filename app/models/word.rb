@@ -7,5 +7,9 @@ class Word < ApplicationRecord
 
   accepts_nested_attributes_for :defination
 
-  pg_search_scope :search_by_title, against: :title
+  pg_search_scope :search_by_title, against: :title, using: {
+    trigram: {
+      word_similarity: true
+    }
+  }
 end

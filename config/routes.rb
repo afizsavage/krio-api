@@ -30,4 +30,7 @@ Rails.application.routes.draw do
   namespace :v1, defaults: { format: 'json' } do
     post 'words', to: 'words#create'
   end
+  # namespace :v1, defaults: { format: 'json' } do
+  #   post 'words/search/:q', to: 'words#search_by_title'
+  # end
 end

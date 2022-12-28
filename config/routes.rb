@@ -11,13 +11,14 @@ Rails.application.routes.draw do
     get 'letters/:id', to: 'letters#show'
   end
 
-  namespace :v1, defaults: { format: 'json' } do
-    get 'users', to: 'users#index'
-  end
+  # namespace :v1, defaults: { format: 'json' } do
+  # get 'users', to: 'users#index'
+  # devise_for :users
+  # end
 
-  namespace :v1, defaults: { format: 'json' } do
-    post 'users', to: 'users#create'
-  end
+  # namespace :v1, defaults: { format: 'json' } do
+  #   post 'users', to: 'users#create'
+  # end
 
   namespace :v1, defaults: { format: 'json' } do
     get 'words', to: 'words#index'

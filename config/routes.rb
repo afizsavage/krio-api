@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :users, defaults: { format: :json }
+
   namespace :v1, defaults: { format: 'json' } do
     get 'definitions', to: 'definations#index'
   end
@@ -16,10 +18,10 @@ Rails.application.routes.draw do
   # devise_for :users
   # end
 
-  namespace :v1, defaults: { format: 'json' } do
-    #   post 'users', to: 'users#create'
-    devise_for :users
-  end
+  # namespace :v1, defaults: { format: 'json' } do
+  #   #   post 'users', to: 'users#create'
+  #   devise_for :users
+  # end
 
   namespace :v1, defaults: { format: 'json' } do
     get 'words', to: 'words#index'

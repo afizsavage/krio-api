@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+  # get 'users/index'
   scope '/api/v1' do
     devise_for :users, defaults: { format: :json }
+    get 'users', to: 'users#index'
   end
 
   scope '/api' do

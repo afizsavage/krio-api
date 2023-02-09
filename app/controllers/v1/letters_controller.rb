@@ -2,7 +2,7 @@ class V1::LettersController < ApplicationController
   def index
     @letters = Letter.all
 
-    render json: @letters.to_json
+    render json: @letters.order(:character).to_json
   end
 
   def show

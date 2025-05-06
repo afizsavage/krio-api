@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
+from uuid import UUID
 
 
 class LetterBase(BaseModel):
@@ -11,7 +12,8 @@ class LetterCreate(LetterBase):
     pass
 
 class LetterOut(LetterBase):
-    id: int
+    id: UUID
+
     class Config:
         orm_mode = True
 
@@ -23,38 +25,41 @@ class LetterUpdate(BaseModel):
 
 class WordBase(BaseModel):
     title: str
-    letter_id: int
+    letter_id: UUID
 
 class WordCreate(WordBase):
     pass
 
 class WordOut(WordBase):
-    id: int
+    id: UUID
+
     class Config:
         orm_mode = True
 
 
 class TranslationBase(BaseModel):
     translation_text: str
-    word_id: int
+    word_id: UUID
 
 class TranslationCreate(TranslationBase):
     pass
 
 class TranslationOut(TranslationBase):
-    id: int
+    id: UUID
+
     class Config:
         orm_mode = True
 
 
 class ExampleBase(BaseModel):
     example_text: str
-    word_id: int
+    word_id: UUID
 
 class ExampleCreate(ExampleBase):
     pass
 
 class ExampleOut(ExampleBase):
-    id: int
+    id: UUID
+
     class Config:
         orm_mode = True

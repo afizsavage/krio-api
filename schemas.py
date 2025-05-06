@@ -15,6 +15,11 @@ class LetterOut(LetterBase):
     class Config:
         orm_mode = True
 
+class LetterUpdate(BaseModel):
+    character: Optional[str] = None
+    position: Optional[int] = None
+    is_digraph: Optional[bool] = None
+
 
 class WordBase(BaseModel):
     title: str

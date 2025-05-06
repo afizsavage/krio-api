@@ -1,15 +1,13 @@
-from typing import Union
-
+# main.py
 from fastapi import FastAPI
+from db import Base, engine
+from routers import letters  # once we add routers
+from dotenv import load_dotenv
+
+load_dotenv()  # This loads variables from .env
 
 app = FastAPI()
 
+Base.metadata.create_all(bind=engine)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+app.include_router(letters.router)  # once you implement it

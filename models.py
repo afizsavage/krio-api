@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship, declarative_base
 Base = declarative_base()
 
 class Letter(Base):
-    __tablename__ = "Letters"
+    __tablename__ = "letters"
 
     id = Column(BigInteger, primary_key=True, index=True)
     character = Column(CHAR(255), nullable=False)
@@ -15,11 +15,11 @@ class Letter(Base):
 
 
 class Word(Base):
-    __tablename__ = "Words"
+    __tablename__ = "words"
 
     id = Column(BigInteger, primary_key=True, index=True)
     title = Column(Text, nullable=False)
-    letter_id = Column(BigInteger, ForeignKey("Letters.id"), nullable=False)
+    letter_id = Column(BigInteger, ForeignKey("letters.id"), nullable=False)
 
     letter = relationship("Letter", back_populates="words")
     translations = relationship("Translation", back_populates="word")
@@ -27,20 +27,20 @@ class Word(Base):
 
 
 class Translation(Base):
-    __tablename__ = "Translations"
+    __tablename__ = "translations"
 
     id = Column(BigInteger, primary_key=True, index=True)
     translation_text = Column(Text, nullable=False)
-    word_id = Column(BigInteger, ForeignKey("Words.id"), nullable=False)
+    word_id = Column(BigInteger, ForeignKey("words.id"), nullable=False)
 
     word = relationship("Word", back_populates="translations")
 
 
 class Example(Base):
-    __tablename__ = "Examples"
+    __tablename__ = "examples"
 
     id = Column(BigInteger, primary_key=True, index=True)
     example_text = Column(Text, nullable=False)
-    word_id = Column(BigInteger, ForeignKey("Words.id"), nullable=False)
+    word_id = Column(BigInteger, ForeignKey("words.id"), nullable=False)
 
     word = relationship("Word", back_populates="examples")

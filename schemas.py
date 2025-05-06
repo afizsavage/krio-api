@@ -53,8 +53,7 @@ class TranslationOut(TranslationBase):
 
 class ExampleBase(BaseModel):
     example_text: str
-    word_id: UUID
-
+    translation_id: int
 class ExampleCreate(ExampleBase):
     pass
 

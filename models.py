@@ -25,8 +25,6 @@ class Word(Base):
 
     letter = relationship("Letter", back_populates="words")
     translations = relationship("Translation", back_populates="word")
-    examples = relationship("Example", back_populates="word")
-
 
 class Translation(Base):
     __tablename__ = "translations"
@@ -36,6 +34,7 @@ class Translation(Base):
     word_id = Column(UUID(as_uuid=True), ForeignKey("words.id"), nullable=False)
 
     word = relationship("Word", back_populates="translations")
+    examples = relationship("Example", back_populates="translation")
 
 
 class Example(Base):
@@ -43,6 +42,6 @@ class Example(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     example_text = Column(Text, nullable=False)
-    word_id = Column(UUID(as_uuid=True), ForeignKey("words.id"), nullable=False)
+    translation_id = Column(UUID(as_uuid=True), ForeignKey("translations.id"), nullable=False)
 
-    word = relationship("Word", back_populates="examples")
+    translation = relationship("Translation", back_populates="examples")

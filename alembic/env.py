@@ -20,7 +20,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 from db import Base  # adjust to your actual path
 
-from models import Base, Word, Letter, Translation, Example
+from models import Base, Word, Letter, Definition, Example
 
 target_metadata = Base.metadata
 

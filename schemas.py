@@ -3,6 +3,9 @@ from typing import List, Optional
 from uuid import UUID
 
 
+# -------------------
+# Letters
+# -------------------
 class LetterBase(BaseModel):
     character: str
     position: int
@@ -11,20 +14,23 @@ class LetterBase(BaseModel):
 class LetterCreate(LetterBase):
     pass
 
+class LetterUpdate(BaseModel):
+    character: Optional[str] = None
+    position: Optional[int] = None
+    is_digraph: Optional[bool] = None
+
 class LetterOut(LetterBase):
     id: UUID
 
     class Config:
         orm_mode = True
 
-class LetterUpdate(BaseModel):
-    character: Optional[str] = None
-    position: Optional[int] = None
-    is_digraph: Optional[bool] = None
 
-
+# -------------------
+# Words
+# -------------------
 class WordBase(BaseModel):
-    title: str
+    word: str
     letter_id: UUID
 
 class WordCreate(WordBase):
@@ -37,28 +43,39 @@ class WordOut(WordBase):
         orm_mode = True
 
 
-class TranslationBase(BaseModel):
-    translation_text: str
+# -------------------
+# Definitions
+# -------------------
+class DefinitionBase(BaseModel):
+    definition: str
     word_id: UUID
 
-class TranslationCreate(TranslationBase):
+class DefinitionCreate(DefinitionBase):
     pass
 
-class TranslationCreateWithExample(BaseModel):
-    word: str
-    translation_text: str
-    example_text: str
-
-class TranslationOut(TranslationBase):
+class DefinitionOut(DefinitionBase):
     id: UUID
 
     class Config:
         orm_mode = True
 
 
+# -------------------
+# Combined Word Creation
+# -------------------
+class DefinitionCreateWithExample(BaseModel):
+    word: str
+    definition: str
+    example_text: str
+
+
+# -------------------
+# Examples
+# -------------------
 class ExampleBase(BaseModel):
     example_text: str
-    translation_id: int
+    word_id: UUID
+
 class ExampleCreate(ExampleBase):
     pass
 

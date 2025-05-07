@@ -44,6 +44,11 @@ class TranslationBase(BaseModel):
 class TranslationCreate(TranslationBase):
     pass
 
+class TranslationCreateWithExample(BaseModel):
+    word: str
+    translation_text: str
+    example_text: str
+
 class TranslationOut(TranslationBase):
     id: UUID
 

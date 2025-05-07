@@ -5,7 +5,7 @@ from db import get_db
 from models import Letter
 from schemas import LetterCreate, LetterUpdate, LetterOut
 
-router = APIRouter(prefix="/letters", tags=["Letters"])
+router = APIRouter()
 
 @router.post("/", response_model=LetterOut)
 def create_letter(letter: LetterCreate, db: Session = Depends(get_db)):

@@ -25,24 +25,6 @@ class LetterOut(LetterBase):
     class Config:
         orm_mode = True
 
-
-# -------------------
-# Words
-# -------------------
-class WordBase(BaseModel):
-    word: str
-    letter_id: UUID
-
-class WordCreate(WordBase):
-    pass
-
-class WordOut(WordBase):
-    id: UUID
-
-    class Config:
-        orm_mode = True
-
-
 # -------------------
 # Definitions
 # -------------------
@@ -59,16 +41,7 @@ class DefinitionOut(DefinitionBase):
     class Config:
         orm_mode = True
 
-
-# -------------------
-# Combined Word Creation
-# -------------------
-class DefinitionCreateWithExample(BaseModel):
-    word: str
-    definition: str
-    example_text: str
-
-
+   
 # -------------------
 # Examples
 # -------------------
@@ -84,3 +57,36 @@ class ExampleOut(ExampleBase):
 
     class Config:
         orm_mode = True
+
+
+# -------------------
+# Words
+# -------------------
+class WordBase(BaseModel):
+    word: str
+    letter_id: UUID
+
+class WordCreate(WordBase):
+    pass
+
+
+class WordOut(BaseModel):
+    id: UUID
+    word: str
+    definitions: List[DefinitionOut]
+    examples: List[ExampleOut]
+
+    class Config:
+        orm_mode = True
+
+
+# -------------------
+# Combined Word Creation
+# -------------------
+
+class WordCreateWithDetails(BaseModel):
+    word: str
+    definition: str
+    example_text: str
+
+ 

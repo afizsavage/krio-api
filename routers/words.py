@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from sqlalchemy.orm import Session
 from models import Word, Definition, Example, Letter
@@ -11,37 +11,43 @@ KRIO_DIGRAPHS = [
     "aw", "ay", "ch", "gb", "kp", "ny", "ɔy", "sh", "th", "zh"
 ]
 
-@router.post("/", response_model=WordOut)
+@router.post("/", response_model=WordOut, status_code=status.HTTP_201_CREATED)
 def create_word(payload: WordCreateWithDetails, db: Session = Depends(get_db)):
     word = payload.word.strip().lower()
 
-    # Get the first 2 characters for possible digraph
+    # Get the correct letter character based on digraph rules
     possible_digraph = word[:2]
     first_letter = word[:1]
-
     letter_char = possible_digraph if possible_digraph in KRIO_DIGRAPHS else first_letter
 
-    # Look for the corresponding Letter
+    # Fetch matching letter from DB
     letter = db.query(Letter).filter(Letter.character == letter_char).first()
     if not letter:
         raise HTTPException(status_code=404, detail=f"No matching letter found for '{letter_char}'")
 
-    # Create the Word
-    db_word = Word(word=word, letter_id=letter.id)
-    db.add(db_word)
-    db.commit()
-    db.refresh(db_word)
+    try:
+        # Create the Word
+        db_word = Word(word=word, letter_id=letter.id)
+        db.add(db_word)
+        db.flush()  # Assigns db_word.id
 
-    # Create the Definition
-    db_definition = Definition(definition=payload.definition, word_id=db_word.id)
-    db.add(db_definition)
+        # Create the Definition
+        db_definition = Definition(definition=payload.definition_text, word_id=db_word.id)
+        db.add(db_definition)
+        db.flush()  # Assigns db_definition.id
 
-    # Create the Example
-    db_example = Example(example_text=payload.example_text, word_id=db_word.id)
-    db.add(db_example)
+        # Create the Example
+        db_example = Example(example_text=payload.example_text, definition_id=db_definition.id)
+        db.add(db_example)
 
-    db.commit()
-    return db_word
+        db.commit()
+        db.refresh(db_word)
+
+        return db_word
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error creating word: {str(e)}")
 
 @router.get("/", response_model=List[WordOut])
 def list_words(db: Session = Depends(get_db)):

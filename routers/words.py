@@ -13,7 +13,7 @@ KRIO_DIGRAPHS = [
     "aw", "ay", "ch", "gb", "kp", "ny", "ɔy", "sh", "th", "zh"
 ]
 
-@router.post("/", response_model=WordOut, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=WordOut, status_code=status.HTTP_201_CREATED)
 def create_word(payload: WordCreateWithDetails, db: Session = Depends(get_db)):
     word = payload.word.strip().lower()
 
@@ -51,7 +51,7 @@ def create_word(payload: WordCreateWithDetails, db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Error creating word: {str(e)}")
 
-@router.get("/", response_model=List[WordOut])
+@router.get("", response_model=List[WordOut])
 def list_words(db: Session = Depends(get_db)):
     words = db.query(Word).all()
     return words

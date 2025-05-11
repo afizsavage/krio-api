@@ -7,7 +7,7 @@ from schemas import ExampleOut
 
 router = APIRouter()
 
-@router.get("/", response_model=List[ExampleOut])
+@router.get("", response_model=List[ExampleOut])
 def list_examples(db: Session = Depends(get_db)):
     examples = db.query(Example).all()
     return examples

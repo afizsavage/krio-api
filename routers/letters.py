@@ -8,7 +8,7 @@ from schemas import LetterCreate, LetterUpdate, LetterOut
 
 router = APIRouter()
 
-@router.post("/", response_model=LetterOut)
+@router.post("", response_model=LetterOut)
 def create_letter(letter: LetterCreate, db: Session = Depends(get_db)):
     db_letter = Letter(**letter.dict())
     db.add(db_letter)
@@ -16,7 +16,7 @@ def create_letter(letter: LetterCreate, db: Session = Depends(get_db)):
     db.refresh(db_letter)
     return db_letter
 
-@router.get("/", response_model=list[LetterOut])
+@router.get("", response_model=list[LetterOut])
 def get_all_letters(db: Session = Depends(get_db)):
     return db.query(Letter).order_by(Letter.position).all()
 

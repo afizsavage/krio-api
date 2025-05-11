@@ -16,7 +16,7 @@ Base.metadata.create_all(bind=engine)
 
 # Register each router
 for router, prefix, tags in all_routers:
-    app.include_router(router, prefix=f"/api{prefix}", tags=tags)
+    app.include_router(router, prefix=f"/api/v1{prefix}", tags=tags)
 
 @app.get("/")
 def root():

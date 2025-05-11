@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
+from uuid import UUID
+
 from db import get_db
 from models import Letter
 from schemas import LetterCreate, LetterUpdate, LetterOut
@@ -19,14 +21,14 @@ def get_all_letters(db: Session = Depends(get_db)):
     return db.query(Letter).order_by(Letter.position).all()
 
 @router.get("/{letter_id}", response_model=LetterOut)
-def get_letter(letter_id: int, db: Session = Depends(get_db)):
+def get_letter(letter_id: UUID, db: Session = Depends(get_db)):
     letter = db.query(Letter).get(letter_id)
     if not letter:
         raise HTTPException(status_code=404, detail="Letter not found")
     return letter
 
 @router.put("/{letter_id}", response_model=LetterOut)
-def update_letter(letter_id: int, update: LetterUpdate, db: Session = Depends(get_db)):
+def update_letter(letter_id: UUID, update: LetterUpdate, db: Session = Depends(get_db)):
     letter = db.query(Letter).get(letter_id)
     if not letter:
         raise HTTPException(status_code=404, detail="Letter not found")
@@ -37,7 +39,7 @@ def update_letter(letter_id: int, update: LetterUpdate, db: Session = Depends(ge
     return letter
 
 @router.delete("/{letter_id}")
-def delete_letter(letter_id: int, db: Session = Depends(get_db)):
+def delete_letter(letter_id: UUID, db: Session = Depends(get_db)):
     letter = db.query(Letter).get(letter_id)
     if not letter:
         raise HTTPException(status_code=404, detail="Letter not found")

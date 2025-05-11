@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from sqlalchemy.orm import Session
+from uuid import UUID
+
 from models import Word, Definition, Example, Letter
 from schemas import WordOut, WordCreateWithDetails, WordOutWithDetails
 from db import get_db
-from uuid import UUID
 
 router = APIRouter()
 
@@ -62,3 +63,9 @@ def get_word(word_id: UUID, db: Session = Depends(get_db)):
     if not word:
         raise HTTPException(status_code=404, detail="Word not found")
     return word
+
+# Get words by letter_ID
+@router.get("/letter/{letter_id}", response_model=List[WordOut])
+def get_words_by_letter(letter_id: UUID, db: Session = Depends(get_db)):
+    words = db.query(Word).filter(Word.letter_id == letter_id).all()
+    return words

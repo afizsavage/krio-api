@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from sqlalchemy.orm import Session
 from models import Word, Definition, Example, Letter
-from schemas import WordOut, WordCreateWithDetails
+from schemas import WordOut, WordCreateWithDetails, WordOutWithDetails
 from db import get_db
+from uuid import UUID
 
 router = APIRouter()
 
@@ -53,3 +54,11 @@ def create_word(payload: WordCreateWithDetails, db: Session = Depends(get_db)):
 def list_words(db: Session = Depends(get_db)):
     words = db.query(Word).all()
     return words
+
+
+@router.get("/{word_id}", response_model=WordOutWithDetails)
+def get_word(word_id: UUID, db: Session = Depends(get_db)):
+    word = db.query(Word).get(word_id)
+    if not word:
+        raise HTTPException(status_code=404, detail="Word not found")
+    return word

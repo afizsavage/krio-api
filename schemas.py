@@ -77,18 +77,24 @@ class WordOut(BaseModel):
     id: UUID
     word: str
     letter_id: UUID  # <-- Add this if you want to return it
-    definitions: List[DefinitionOut]
-
     class Config:
         orm_mode = True
 
 # -------------------
-# Combined Word Creation
+# Combined Word With Details
 # -------------------
-
 class WordCreateWithDetails(BaseModel):
     word: str
     definition_text: str  # consider renaming to definition_text for clarity
     example_text: str
 
+
+class WordOutWithDetails(BaseModel):
+    id: UUID
+    word: str
+    letter_id: UUID  # <-- Add this if you want to return it
+    definitions: List[DefinitionOut]
+
+    class Config:
+        orm_mode = True
  

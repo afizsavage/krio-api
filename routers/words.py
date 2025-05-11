@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from sqlalchemy.orm import Session
 from uuid import UUID
+from datetime import date
+import random
 
 from models import Word, Definition, Example, Letter
 from schemas import WordOut, WordCreateWithDetails, WordOutWithDetails
@@ -56,6 +58,26 @@ def list_words(db: Session = Depends(get_db)):
     words = db.query(Word).all()
     return words
 
+# Get words by letter_ID
+@router.get("/letter/{letter_id}", response_model=List[WordOut])
+def get_words_by_letter(letter_id: UUID, db: Session = Depends(get_db)):
+    words = db.query(Word).filter(Word.letter_id == letter_id).all()
+    return words
+
+@router.get("/word-of-the-day", response_model=WordOutWithDetails)
+def word_of_the_day(db: Session = Depends(get_db)):
+    # Use today's date as a seed to get a consistent word every day
+    today = date.today()
+    random.seed(today.toordinal())
+
+    total_words = db.query(Word).count()
+    if total_words == 0:
+        raise HTTPException(status_code=404, detail="No words available.")
+
+    offset = random.randint(0, total_words - 1)
+    word = db.query(Word).offset(offset).first()
+
+    return word
 
 @router.get("/{word_id}", response_model=WordOutWithDetails)
 def get_word(word_id: UUID, db: Session = Depends(get_db)):
@@ -63,9 +85,3 @@ def get_word(word_id: UUID, db: Session = Depends(get_db)):
     if not word:
         raise HTTPException(status_code=404, detail="Word not found")
     return word
-
-# Get words by letter_ID
-@router.get("/letter/{letter_id}", response_model=List[WordOut])
-def get_words_by_letter(letter_id: UUID, db: Session = Depends(get_db)):
-    words = db.query(Word).filter(Word.letter_id == letter_id).all()
-    return words

@@ -1,8 +1,11 @@
 # main.py
 from fastapi import FastAPI
 from db import Base, engine
-from routers import all_routers
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
+
+from routers import all_routers
+
 
 load_dotenv()  # This loads variables from .env
 
@@ -17,6 +20,15 @@ Base.metadata.create_all(bind=engine)
 # Register each router
 for router, prefix, tags in all_routers:
     app.include_router(router, prefix=f"/api/v1{prefix}", tags=tags)
+
+# Add CORS settings
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def root():

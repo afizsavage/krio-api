@@ -98,3 +98,9 @@ class WordOutWithDetails(BaseModel):
     class Config:
         orm_mode = True
  
+# -------------------
+# Search Words
+# -------------------
+class SearchResponse(BaseModel):
+    success: bool
+    data: List[WordOut]

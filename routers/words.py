@@ -5,8 +5,8 @@ from uuid import UUID
 from datetime import date
 import random
 
-from models import Word, Definition, Example, Letter
-from schemas import WordOut, WordCreateWithDetails, WordOutWithDetails
+from models import Word, Translation, Example, Letter
+from schemas import WordOut, WordCreateWithDetails, WordOutWithDetails, WordDetailsResponse
 from db import get_db
 
 router = APIRouter()
@@ -36,7 +36,7 @@ def create_word(payload: WordCreateWithDetails, db: Session = Depends(get_db)):
         db.flush()  # Assigns db_word.id
 
         # Create the Definition
-        db_definition = Definition(definition=payload.definition_text, word_id=db_word.id)
+        db_definition = Translation(definition=payload.definition_text, word_id=db_word.id)
         db.add(db_definition)
         db.flush()  # Assigns db_definition.id
 
@@ -79,9 +79,9 @@ def word_of_the_day(db: Session = Depends(get_db)):
 
     return word
 
-@router.get("/{word_id}", response_model=WordOutWithDetails)
+@router.get("/{word_id}", response_model=WordDetailsResponse)
 def get_word(word_id: UUID, db: Session = Depends(get_db)):
     word = db.query(Word).get(word_id)
     if not word:
         raise HTTPException(status_code=404, detail="Word not found")
-    return word
+    return {"success": True, "data": word}

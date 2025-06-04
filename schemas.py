@@ -26,43 +26,6 @@ class LetterOut(LetterBase):
         orm_mode = True
 
 # -------------------
-# Examples
-# -------------------
-class ExampleBase(BaseModel):
-    example_text: str
-    definition_id: UUID
-
-class ExampleCreate(ExampleBase):
-    definition_id: UUID
-
-class ExampleOut(ExampleBase):
-    id: UUID
-
-    class Config:
-        orm_mode = True
-
-
-# -------------------
-# Definitions
-# -------------------
-class DefinitionBase(BaseModel):
-    definition: str
-    word_id: UUID
-
-
-class DefinitionCreate(DefinitionBase):
-    pass
-
-class DefinitionOut(DefinitionBase):
-    id: UUID
-    examples: List[ExampleOut]
-
-
-    class Config:
-        orm_mode = True
-
-
-# -------------------
 # Words
 # -------------------
 class WordBase(BaseModel):
@@ -80,6 +43,40 @@ class WordOut(BaseModel):
     class Config:
         orm_mode = True
 
+
+# -------------------
+# Examples
+# -------------------
+class ExampleBase(BaseModel):
+    example_text: str
+    word_id: UUID
+
+class ExampleCreate(ExampleBase):
+    pass
+class ExampleOut(ExampleBase):
+    id: UUID
+
+    class Config:
+        orm_mode = True
+
+
+# -------------------
+# Definitions
+# -------------------
+class TranslationBase(BaseModel):
+    translation: str
+    word_id: UUID
+
+
+class TranslationCreate(TranslationBase):
+    pass
+
+class TranslationOut(TranslationBase):
+    id: UUID
+
+    class Config:
+        orm_mode = True
+
 # -------------------
 # Combined Word With Details
 # -------------------
@@ -93,11 +90,15 @@ class WordOutWithDetails(BaseModel):
     id: UUID
     word: str
     letter_id: UUID  # <-- Add this if you want to return it
-    definitions: List[DefinitionOut]
+    translation: TranslationOut
 
     class Config:
         orm_mode = True
  
+class WordDetailsResponse(BaseModel):
+    success: bool
+    data: WordOutWithDetails
+
 # -------------------
 # Search Words
 # -------------------

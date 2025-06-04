@@ -42,7 +42,7 @@ class Example(Base):
     __tablename__ = "examples"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    example_text = Column(Text, nullable=False)
+    example = Column(Text, nullable=False)
     word_id = Column(UUID(as_uuid=True), ForeignKey("words.id"))
 
     word = relationship("Word", back_populates="examples")
